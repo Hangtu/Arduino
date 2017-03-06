@@ -1,0 +1,69 @@
+//ENCENDIDO Y APAGADO DE 3 LED'S
+
+int ledPin1=6;  //Define las salidas de los LED's
+int ledPin2=7;
+int ledPin3=8;
+
+void setup(){    //Configura las SALIDAS
+
+  pinMode(ledPin1, OUTPUT);  //Declarar LED's como SALIDAS
+  pinMode(ledPin2, OUTPUT);
+  pinMode(ledPin3, OUTPUT);
+  digitalWrite(ledPin1, LOW);   //Apaga los LED's
+  digitalWrite(ledPin2, LOW);
+  digitalWrite(ledPin3, LOW);
+
+}
+
+void loop(){   //Bucle de Funcionamiento!!!
+  prendeVerde();
+  delay(5000);
+  parpadeaVerde();
+  parpadeaAmarillo();
+  prendeRojo();
+    
+}
+
+
+void prendeVerde(){
+digitalWrite(ledPin1, HIGH);
+}
+
+void parpadeaVerde(){
+ for(int i=0;i<=3;i++){
+ digitalWrite(ledPin1, HIGH); //Apaga y enciende los leds cada 200ms
+ delay(500);
+ digitalWrite(ledPin1, LOW);
+ delay(500);
+  }
+ digitalWrite(ledPin1, LOW);
+}
+
+
+void parpadeaAmarillo(){
+ for(int i=0;i<=3;i++){
+ digitalWrite(ledPin2, HIGH); //Apaga y enciende los leds cada 200ms
+ delay(500);
+ digitalWrite(ledPin2, LOW);
+ delay(500);
+  }
+  digitalWrite(ledPin2, LOW);
+}
+
+void prendeRojo(){
+ digitalWrite(ledPin3, HIGH);
+ delay(5000);
+ digitalWrite(ledPin3, LOW);
+}
+
+
+
+
+
+
+
+
+
+
+
+

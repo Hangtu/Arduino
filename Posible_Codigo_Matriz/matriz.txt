@@ -1,0 +1,91 @@
+#include <FrequencyTimer2.h>
+#include "Pattern.h"
+
+const int rows[] = { 12, 11, 13, 7, 9, 6, 8 }; //radek     1, 2, 3, 4, 5, 6, 7
+const int cols[] = { 10, 1, 3, 2, 0 };         //sloupec   1, 5, 3, 4, 2
+
+// Pripojeni­ k Arduino NANO mezi displej a piny D0,D1,D2,D3,D10 vlozime ochranny rezistor 100R
+
+// Arduino PIN D0 - LED Matrix 5x7 displej Sloupec 2 PIN 3
+// Arduino PIN D1 - LED Matrix 5x7 displej Sloupec 5 PIN 6
+// Arduino PIN D2 - LED Matrix 5x7 displej Sloupec 4 PIN 10 
+// Arduino PIN D3 - LED Matrix 5x7 displej Sloupec 3 PIN 4,11
+// Arduino PIN D4 
+// Arduino PIN D5
+// Arduino PIN D6 - LED Matrix 5x7 displej radek 6 PIN 7
+// Arduino PIN D7 - LED Matrix 5x7 displej radek 4 PIN 5,12
+// Arduino PIN D8 - LED Matrix 5x7 displej radek 7 PIN 2
+// Arduino PIN D9 - LED Matrix 5x7 displej radek 5 PIN 1
+// Arduino PIN D10 - LED Matrix 5x7 displej Sloupec 1 PIN 13
+// Arduino PIN D11 - LED Matrix 5x7 displej radek 2 PIN 14
+// Arduino PIN D12 - LED Matrix 5x7 displej radek 1 PIN 9
+// Arduino PIN D13 - LED Matrix 5x7 displej radek 3 PIN 8
+
+
+
+void setup()
+{
+  for (int c = 0; c < NUM_COLS; c++)
+  {
+    pinMode(cols[c], OUTPUT);
+    digitalWrite(cols[c], LOW);
+  }
+
+  for (int r = 0; r < NUM_ROWS; r++)
+  {
+    pinMode(rows[r], OUTPUT);
+    digitalWrite(rows[r], LOW);
+  }
+
+  setPattern(&PATTERN_BLANK);
+  
+  FrequencyTimer2::disable();
+  FrequencyTimer2::setPeriod(2000);
+  FrequencyTimer2::setOnOverflow(displayByRows);
+}
+
+
+
+int col = NUM_COLS - 1;
+
+void displayByCols()
+{
+  digitalWrite(cols[col], HIGH);
+
+  col++;
+  if (col >= NUM_COLS)
+    col = 0;
+
+  for (int row = 0; row < NUM_ROWS; row++)
+  {
+    digitalWrite(rows[row], (screen[row][col]) ? HIGH : LOW);
+  }
+  digitalWrite(cols[col], LOW);
+}
+
+
+
+int row = NUM_ROWS - 1;
+
+void displayByRows()
+{
+  digitalWrite(rows[row], LOW);
+  
+  row++;
+  if (row >= NUM_ROWS)
+    row = 0;
+    
+  for (int col = 0; col < NUM_COLS; col++)
+  {
+    digitalWrite(cols[col], (screen[row][col]) ? LOW : HIGH);
+  }
+  digitalWrite(rows[row], HIGH);
+  
+}
+
+
+void loop()
+{
+  scrollString("ARDUINO NANO LED MATRIX 5X7 DOTS GREEN", 500, 2);
+  delay(1000);
+}
